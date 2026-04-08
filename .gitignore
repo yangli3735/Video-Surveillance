@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.env
+.venv/
+venv/
+
+# YOLO model files (download separately)
+data/models/*.pt
+data/models/*.engine
+data/models/*.onnx
+data/models/*.tflite
+
+# Recordings (large media files)
+data/recordings/
+
+# Logs
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

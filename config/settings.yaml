@@ -1,0 +1,75 @@
+# ============================================================
+#  Smart Camera Surveillance System — Configuration
+#  Platform: NVIDIA Jetson Orin Nano
+# ============================================================
+
+# ---------- Camera ----------
+camera:
+  # CAM0 CSI port (Jetson Orin Nano) — sensor-id=0
+  source: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert ! video/x-raw,format=BGR ! appsink drop=1"
+  width: 1280
+  height: 720
+  fps: 30
+  use_gstreamer: true        # CAM0 is a CSI port — requires GStreamer pipeline
+
+# ---------- YOLO Inference ----------
+inference:
+  model_path: "data/models/yolov8n.pt"   # path to YOLO weights
+  engine_path: "data/models/yolov8n.engine"  # TensorRT engine (compiled on device)
+  use_tensorrt: false         # set true after exporting to TensorRT
+  confidence_threshold: 0.50
+  iou_threshold: 0.45
+  input_size: [640, 640]      # YOLO input resolution
+  device: "cuda"              # "cuda" or "cpu"
+  infer_every_n_frames: 2     # run inference on 1 out of N frames to save compute
+
+# ---------- Event Detection ----------
+event:
+  watch_classes:              # object classes that trigger an event
+    - person
+    - car
+    - bicycle
+  min_confidence: 0.60        # minimum confidence to trigger event
+  cooldown_seconds: 5.0       # minimum gap between repeated events for same class
+
+# ---------- Recording ----------
+recording:
+  enabled: true
+  save_dir: "data/recordings"
+  snapshot_on_event: true
+  video_on_event: true
+  pre_event_buffer_seconds: 3  # frames buffered before event (requires ring buffer)
+  post_event_record_seconds: 5 # seconds to keep recording after event ends
+  video_codec: "mp4v"          # fourcc codec; use "avc1" for H.264
+  video_fps: 20
+
+# ---------- Display ----------
+display:
+  enabled: true
+  mode: "local"              # "local" (OpenCV window) | "web" (future)
+  window_name: "Surveillance"
+  show_fps: true
+  show_labels: true
+  show_confidence: true
+
+# ---------- GPIO ----------
+gpio:
+  enabled: false             # set true when hardware is wired
+  buzzer_pin: 18             # BCM pin number
+  buzzer_duration_ms: 500
+  motion_sensor_pin: 24      # PIR sensor input pin
+  use_rpi_gpio: false        # false = use Jetson.GPIO library
+
+# ---------- Logging ----------
+logging:
+  level: "INFO"              # DEBUG | INFO | WARNING | ERROR
+  log_dir: "logs"
+  max_bytes: 5242880         # 5 MB per log file
+  backup_count: 3
+
+# ---------- Application ----------
+app:
+  thread_camera: true        # run camera capture in its own thread
+  thread_inference: true     # run inference in its own thread
+  thread_recording: true     # run recording in its own thread
+  queue_maxsize: 4           # max frames queued between threads (backpressure)

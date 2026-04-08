@@ -1,0 +1,33 @@
+# Core dependencies
+# Install order matters on Jetson — OpenCV with CUDA is pre-installed via JetPack
+
+# YOLO inference (Ultralytics YOLOv8/v11)
+ultralytics>=8.2.0
+
+# Config file parsing
+PyYAML>=6.0.1
+
+# Jetson GPIO (install on-device only — skip on dev PC)
+# Jetson.GPIO>=2.1.6
+
+# Numpy (usually pre-installed with JetPack / OpenCV)
+numpy>=1.24.0
+
+# ---------------------------------------------------------------
+# Optional / future modules
+# ---------------------------------------------------------------
+# Web dashboard
+# Flask>=3.0.0
+# flask-socketio>=5.3.6
+
+# Face recognition (requires dlib or InsightFace)
+# insightface>=0.7.3
+
+# Database storage
+# SQLAlchemy>=2.0.0
+
+# Cloud notifications
+# requests>=2.31.0
+
+# MQTT for IoT integration
+# paho-mqtt>=2.0.0

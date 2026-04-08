@@ -1,0 +1,11 @@
+This folder holds YOLO model weights and TensorRT engine files.
+
+Download YOLOv8n (nano — best for Jetson Orin Nano):
+    python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
+    mv yolov8n.pt data/models/
+
+Or download manually from:
+    https://github.com/ultralytics/assets/releases
+
+TensorRT engine will be auto-generated here on first run when
+use_tensorrt: true is set in config/settings.yaml.

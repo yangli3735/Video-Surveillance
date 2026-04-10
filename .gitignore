@@ -21,3 +21,13 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# SSH keys
+key_github
+key_github.pub
+
+# Common private key patterns
+id_rsa
+id_ed25519
+*.pem
+*.key
